@@ -8,9 +8,8 @@ import java.nio.file.Paths;
 
 public class FilePartReader {
     String filePath;
-    int fromLine;
-    int toLine;
-    public void setup(){
+    public void setup(String filePath, int fromLine, int toLine){
+        this.filePath = filePath;
         if (toLine < fromLine) {
             throw new IllegalArgumentException("Value smaller than " + fromLine);
         }
@@ -19,19 +18,16 @@ public class FilePartReader {
         }
     }
 
-    public String read(String filePath) {
-//        String filePath = "src/main/java/codecool/textFile.txt";
-//        return new String (Files.readAllBytes(Paths.get(filePath)));
+    public String read() {
         BufferedReader reader;
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
             reader = new BufferedReader(new FileReader(filePath));
             String line;
-            String ls = System.getProperty("line.separator");
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
-                stringBuilder.append(ls);
+                stringBuilder.append(",");
             }
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         } catch (IOException e) {
@@ -41,10 +37,10 @@ public class FilePartReader {
     }
 
     public String readLine(int fromLine, int toLine){
-        String lines = read("src/main/java/codecool/textFile.txt");
+        String lines = read();
         String[] parts = lines.split(",");
-        for (int i = 0; i < toLine; i++) {
-            if(i > fromLine){
+        for (int i = 0; i <= toLine; i++) {
+            if(i >= fromLine){
                 return parts[i];
             }
         }
